@@ -1,0 +1,12 @@
+#:import Window kivy.core.window.Window
+
+<StartWidget@MDBoxLayout>:
+    orientation: "vertical"
+    md_bg_color: app.theme_cls.primary_color
+
+    MDLabel:
+        halign: "center"
+
+    MDFlatButton:
+        md_bg_color: app.theme_cls.warn_color if self.text == "exit" else app.theme_cls.primary_color
+

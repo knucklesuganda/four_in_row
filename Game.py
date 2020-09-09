@@ -1,15 +1,10 @@
 import numpy as np
-from pynput import keyboard
-from pynput.keyboard import Listener
-from os import system
 from time import sleep
 
 
-class Main:
+class Game:
     def __init__(self):
-        self.is_game = True
-        self.listener = Listener(on_release=self.move)
-
+        self.is_running = True
         self.pos_x = 3
         self.field = np.zeros((5, 5))
 
@@ -17,25 +12,15 @@ class Main:
         self.max_player = 2
         self.win_length = 4
 
-    def main(self):
-        self.listener.start()
-
-        while self.is_game:
-            self.__show_field()
-
-        self.listener.stop()
-        print(f"Player {self.current_player} won!")
-        sleep(10)
-
     def move(self, key):
         try:
-            if key.char == 'd':
+            if key == 'right':
                 self.pos_x += 1
 
                 if self.pos_x > len(self.field[0]) - 1:
                     self.pos_x = 0
 
-            elif key.char == 'a':
+            elif key == 'left':
                 self.pos_x -= 1
 
                 if self.pos_x < 0:
@@ -44,18 +29,16 @@ class Main:
         except AttributeError as exc:
             print(exc)
 
-        if key == keyboard.Key.enter:
-            try:
-                self.drop_cell()
-
-            except Exception as exc:
-                print("Position is occupied!\n", exc)
-                sleep(2)
+        if key == 'drop':
+            self.drop_cell()
 
             if self.check_win():
-                self.is_game = False
+                self.is_running = False
 
             self.switch_player()
+
+    def get_pos(self):
+        return self.pos_x + 1
 
     def drop_cell(self):
         current_y = len(self.field[self.pos_x]) - 1
@@ -71,12 +54,8 @@ class Main:
         else:
             self.current_player = 1
 
-    def __show_field(self):
-        print(f"Position: {self.pos_x}\n{' ' * (self.pos_x + 5)}|")
-        print(self.field)
-
-        sleep(0.1)
-        system("cls")
+    def show_field(self):
+        return self.field
 
     def check_win(self):
         for i in range(self.field.shape[0]):
@@ -114,8 +93,3 @@ class Main:
                 return True
 
         return False
-
-
-if __name__ == '__main__':
-    game = Main()
-    game.main()
