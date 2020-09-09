@@ -24,7 +24,11 @@ class Main(MDApp):
 
     def start_game(self):
         self.current_widget.clear_widgets()
-        self.current_widget.add_widget(GameWidget())
+        self.current_widget.add_widget(GameWidget(self.return_back))
+
+    def return_back(self):
+        self.current_widget.clear_widgets()
+        self.current_widget.add_widget(self.start_widget)
 
     def build(self):
         return self.current_widget

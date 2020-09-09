@@ -1,12 +1,43 @@
 #:import Window kivy.core.window.Window
+#:import MDLabel kivymd.uix.label
+#:import MDBoxLayout kivymd.uix.boxlayout
+#:import MDIconButton kivymd.uix.button
 
-<StartWidget@MDBoxLayout>:
+<StartWidget, GameWidget>:
     orientation: "vertical"
     md_bg_color: app.theme_cls.primary_color
+    padding: Window.size[0] // 4, 0
+
+<StartWidget>:
+    padding: Window.size[0] // 4, Window.size[1] // 4, 0, Window.size[1] // 4
+
+<GameWidget>:
+    MDBoxLayout:
+        orientation: "horizontal"
+        MDIconButton:
+            id: return_button
+            icon: "arrow-left-circle"
+            size_hint: None, 0.2
+
+        MDLabel:
+            text: app.title
+            theme_text_color: "Primary"
+            font_style: "H5"
+            size_hint: None, 0.2
+            halign: "center"
 
     MDLabel:
+        id: error_label
+        theme_text_color: "Error"
+        size_hint: 1, 0.2
+        font_style: "H5"
         halign: "center"
 
-    MDFlatButton:
-        md_bg_color: app.theme_cls.warn_color if self.text == "exit" else app.theme_cls.primary_color
+
+<GameField>:
+    size_hint: 1, 1
+
+<ControlsBox>:
+    size_hint: 1, 0.2
+    pos_hint: {'center_x': 0.7}
 
